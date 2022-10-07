@@ -11,15 +11,12 @@ class Board:
     board = []
     ships = 5
     aircraft_carrier = 1
-    battleship = 1
+    battleship = 5
     cruise = 1
     submarine = 1
     destructor = 1
 
     def __init__(self):
-        pass
-
-    def create_board(self):
         self.board = []
         for x in range(10):
             row = []
@@ -109,7 +106,7 @@ class Board:
 
     def mark_bullet(self, pos):
         pos_y = get_row(pos)
-        pos_x = int(pos[1:])
+        pos_x = int(pos[1:])-1
         if self.board[pos_x][pos_y][0] == " ":
             self.board[pos_x][pos_y][0] = "."
             self.board[pos_x][pos_y][1] = True
@@ -117,13 +114,3 @@ class Board:
             self.board[pos_x][pos_y][1] = True
 
 
-if __name__ == '__main__':
-    board = Board()
-    board.create_board()
-    board.print_board()
-    board.set_ships()
-    board.mark_bullet("a1")
-    board.print_board()
-    board.mark_bullet("b1")
-    board.print_board()
-    print(board.board)
