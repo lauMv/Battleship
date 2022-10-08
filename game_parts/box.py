@@ -1,6 +1,9 @@
 
 
 class Box:
+    def __init__(self):
+        pass
+
     state = False
     cont = " "
     pos_x, pos_y = 0, 0

@@ -1,4 +1,4 @@
-from player import Player
+from .player import Player
 
 
 class Game:
@@ -20,7 +20,7 @@ class Game:
                 p1_shoot = self.player1.shoot()
                 self.player2.recive_bullet(p1_shoot)
             if self.player2.get_state():
-                loser="player_2"
+                loser = "player_2"
                 winner = "player_1"
             else:
                 p2_shoot = self.player2.shoot()

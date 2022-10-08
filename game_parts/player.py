@@ -1,14 +1,14 @@
-from board import Board
+from .board import Board
 from time import sleep
 import os
 
 
 class Player:
+    def __init__(self):
+        pass
+
     board = Board()
     state = False
-
-    def __init__(self):
-        state = False
 
     def set_board(self):
         self.board.set_ships()
@@ -26,7 +26,6 @@ class Player:
     def shoot(self):
         bullet = input("Disparar: ")
         return bullet
-        os.system("cls")
 
     def get_state(self):
         return self.state

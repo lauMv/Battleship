@@ -1,5 +1,5 @@
 from colorclass import Color
-from box import Box
+from .box import Box
 import os
 
 
@@ -7,6 +7,18 @@ def get_row(position):
     file = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
     pos = file.index(position[0])
     return int(pos)
+
+
+def validate_ship_size(initial_position, final_position, len):
+    pos_x_init, pos_x_final = int(initial_position[1:]) - 1, int(final_position[1:]) - 1
+    pos_y_init, pos_y_final = get_row(initial_position), get_row(final_position)
+    if pos_x_init == pos_x_final:
+        if pos_y_final - pos_y_init == len - 1:
+            return True
+    elif pos_y_init == pos_y_final:
+        if pos_x_final - pos_x_init == len - 1:
+            return True
+    return False
 
 
 class Board:
@@ -47,19 +59,19 @@ class Board:
 
             for elem in row:
                 if elem.get_state():
-                    print(Color('{autored}'+elem.get_cont()+'{/red}') + " |", end=" ")
+                    print(Color('{autored}' + elem.get_cont() + '{/red}') + " |", end=" ")
                 else:
                     print(elem.get_cont() + " |", end=" ")
             print('\n')
-            col = col+1
+            col = col + 1
 
-    def save_ship_positions(self, initial_position,  final_position):
+    def save_ship_positions(self, initial_position, final_position):
         pos_init_y, pos_final_y = get_row(initial_position), get_row(final_position)
         pos_init_x, pos_final_x = int(initial_position[1:]) - 1, int(final_position[1:]) - 1
         coordinates = []
         if pos_init_y == pos_final_y:
             index = pos_init_x
-            for elem in range(pos_init_x, pos_final_x+1):
+            for elem in range(pos_init_x, pos_final_x + 1):
                 if self.board[index][pos_init_y].get_cont() == " ":
                     self.board[index][pos_init_y].set_cont("X")
                     self.board[index][pos_init_y].set_pos(index, pos_final_y)
@@ -71,7 +83,7 @@ class Board:
 
         if pos_init_x == pos_final_x:
             index = pos_init_y
-            for elem in range(pos_init_y, pos_final_y+1):
+            for elem in range(pos_init_y, pos_final_y + 1):
                 if self.board[pos_init_x][index].get_cont() == " ":
                     self.board[pos_init_x][index].set_cont("X")
                     self.board[pos_init_x][index].set_pos(pos_init_x, index)
@@ -87,7 +99,7 @@ class Board:
         initial_position = input("Posicion inicial (Ej: A7): ")
         print("Seleccionar posicion final: ")
         final_position = input("Posicion final: ")
-        if self.validate_ship_size(initial_position, final_position, 5):
+        if validate_ship_size(initial_position, final_position, 5):
             self.save_ship_positions(initial_position, final_position)
             self.print_board()
 
@@ -95,7 +107,7 @@ class Board:
         initial_position = input("Posicion inicial (Ej: A7): ")
         print("Seleccionar posicion final: ")
         final_position = input("Posicion final: ")
-        if self.validate_ship_size(initial_position, final_position, 4):
+        if validate_ship_size(initial_position, final_position, 4):
             self.save_ship_positions(initial_position, final_position)
             self.print_board()
 
@@ -103,7 +115,7 @@ class Board:
         initial_position = input("Posicion inicial (Ej: A7): ")
         print("Seleccionar posicion final: ")
         final_position = input("Posicion final: ")
-        if self.validate_ship_size(initial_position, final_position, 3):
+        if validate_ship_size(initial_position, final_position, 3):
             self.save_ship_positions(initial_position, final_position)
             self.print_board()
 
@@ -111,7 +123,7 @@ class Board:
         initial_position = input("Posicion inicial (Ej: A7): ")
         print("Seleccionar posicion final: ")
         final_position = input("Posicion final: ")
-        if self.validate_ship_size(initial_position, final_position, 3):
+        if validate_ship_size(initial_position, final_position, 3):
             self.save_ship_positions(initial_position, final_position)
             self.print_board()
 
@@ -119,13 +131,13 @@ class Board:
         initial_position = input("Posicion inicial (Ej: A7): ")
         print("Seleccionar posicion final: ")
         final_position = input("Posicion final: ")
-        if self.validate_ship_size(initial_position, final_position, 2):
+        if validate_ship_size(initial_position, final_position, 2):
             self.save_ship_positions(initial_position, final_position)
             self.print_board()
 
     def mark_bullet(self, pos):
         pos_y = get_row(pos)
-        pos_x = int(pos[1:])-1
+        pos_x = int(pos[1:]) - 1
         if self.board[pos_x][pos_y].get_cont() == " ":
             self.board[pos_x][pos_y].set_cont(".")
             self.board[pos_x][pos_y].change_state()
@@ -149,14 +161,3 @@ class Board:
                 self.ships -= 1
                 ships_sunk += 1
         return ships_sunk
-
-    def validate_ship_size(self, initial_position, final_position, len):
-        pos_x_init, pos_x_final = int(initial_position[1:]) - 1, int(final_position[1:]) - 1
-        pos_y_init, pos_y_final = get_row(initial_position), get_row(final_position)
-        if pos_x_init == pos_x_final:
-            if pos_y_final - pos_y_init == len-1:
-                return True
-        elif pos_y_init == pos_y_final:
-            if pos_x_final - pos_x_init == len-1:
-                return True
-        return False
