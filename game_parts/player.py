@@ -5,9 +5,10 @@ import os
 
 class Player:
     board = Board()
+    state = False
 
     def __init__(self):
-        pass
+        state = False
 
     def set_board(self):
         self.board.set_ships()
@@ -16,6 +17,9 @@ class Player:
 
     def recive_bullet(self, bullet):
         self.board.mark_bullet(bullet)
+        self.board.print_board()
+        if self.board.get_cant_ships() == 0:
+            self.state = True
         sleep(4)
         os.system("cls")
 
@@ -24,19 +28,5 @@ class Player:
         return bullet
         os.system("cls")
 
-    def show_board(self):
-        self.board.print_board()
-        sleep(4)
-        os.system("cls")
-
-
-if __name__ == '__main__':
-
-    player1 = Player()
-    player1.set_board()
-    player1.recive_bullet("a5")
-    player1.recive_bullet("a6")
-    player1.recive_bullet("a7")
-    player1.recive_bullet("a8")
-    player1.recive_bullet("a9")
-    player1.show_board()
+    def get_state(self):
+        return self.state

@@ -1,5 +1,6 @@
 from colorclass import Color
 from box import Box
+import os
 
 
 def get_row(position):
@@ -30,6 +31,7 @@ class Board:
         return self.ships
 
     def print_board(self):
+        self.send_sunk_message()
         col = 1
         file_names = [' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
         for elem in file_names:
@@ -82,39 +84,44 @@ class Board:
 
     def set_ships(self):
         print("Seleccionar posicion inicial para el porta aviones (5 casillas): ")
-        initial_position = input("Posicion inicial (Ej: A7)")
-        print("Seleccionar posicion final")
-        final_position = input("Posicion final")
-        self.save_ship_positions(initial_position, final_position)
-        self.print_board()
+        initial_position = input("Posicion inicial (Ej: A7): ")
+        print("Seleccionar posicion final: ")
+        final_position = input("Posicion final: ")
+        if self.validate_ship_size(initial_position, final_position, 5):
+            self.save_ship_positions(initial_position, final_position)
+            self.print_board()
 
-        # print("Seleccionar posicion inicial para el acorazado (4 casillas): ")
-        # initial_position = input("Posicion inicial (Ej: A7)")
-        # print("Seleccionar posicion final")
-        # final_position = input("Posicion final")
-        # self.save_ship_positions(initial_position, final_position)
-        # self.print_board()
+        print("Seleccionar posicion inicial para el acorazado (4 casillas): ")
+        initial_position = input("Posicion inicial (Ej: A7): ")
+        print("Seleccionar posicion final: ")
+        final_position = input("Posicion final: ")
+        if self.validate_ship_size(initial_position, final_position, 4):
+            self.save_ship_positions(initial_position, final_position)
+            self.print_board()
 
-        # print("Seleccionar posicion inicial para el crucero (3 casillas): ")
-        # initial_position = input("Posicion inicial (Ej: A7)")
-        # print("Seleccionar posicion final")
-        # final_position = input("Posicion final")
-        # self.save_ship_positions(initial_position, final_position)
-        # self.print_board()
+        print("Seleccionar posicion inicial para el crucero (3 casillas): ")
+        initial_position = input("Posicion inicial (Ej: A7): ")
+        print("Seleccionar posicion final: ")
+        final_position = input("Posicion final: ")
+        if self.validate_ship_size(initial_position, final_position, 3):
+            self.save_ship_positions(initial_position, final_position)
+            self.print_board()
 
-        # print("Seleccionar posicion inicial para el submarino (3 casillas): ")
-        # initial_position = input("Posicion inicial (Ej: A7)")
-        # print("Seleccionar posicion final")
-        # final_position = input("Posicion final")
-        # self.save_ship_positions(initial_position, final_position)
-        # self.print_board()
-        #
-        # print("Seleccionar posicion inicial para el destructor (2 casillas): ")
-        # initial_position = input("Posicion inicial (Ej: A7)")
-        # print("Seleccionar posicion final")
-        # final_position = input("Posicion final")
-        # self.save_ship_positions(initial_position, final_position)
-        # self.print_board()
+        print("Seleccionar posicion inicial para el submarino (3 casillas): ")
+        initial_position = input("Posicion inicial (Ej: A7): ")
+        print("Seleccionar posicion final: ")
+        final_position = input("Posicion final: ")
+        if self.validate_ship_size(initial_position, final_position, 3):
+            self.save_ship_positions(initial_position, final_position)
+            self.print_board()
+
+        print("Seleccionar posicion inicial para el destructor (2 casillas): ")
+        initial_position = input("Posicion inicial (Ej: A7): ")
+        print("Seleccionar posicion final: ")
+        final_position = input("Posicion final: ")
+        if self.validate_ship_size(initial_position, final_position, 2):
+            self.save_ship_positions(initial_position, final_position)
+            self.print_board()
 
     def mark_bullet(self, pos):
         pos_y = get_row(pos)
@@ -122,18 +129,20 @@ class Board:
         if self.board[pos_x][pos_y].get_cont() == " ":
             self.board[pos_x][pos_y].set_cont(".")
             self.board[pos_x][pos_y].change_state()
-            if check_sunk_chip() > self.ships_sunks:
-                self.print_board()
-                print("Hundido")
-                self.ships_sunks += 1
         else:
             self.board[pos_x][pos_y].change_state()
+
+    def send_sunk_message(self):
+        if self.check_sunk_ship() > self.ships_sunks:
+            os.system("cls")
+            print(Color('{autored}' + "Barco Hundido!!" + '{/red}'))
+            self.ships_sunks += 1
 
     def check_sunk_ship(self):
         ships_sunk = 0
         for ship in self.ships_positions:
             is_sunk = 0
-            for pos in range(len(ship)):
+            for pos in ship:
                 if self.board[pos[0]][pos[1]].get_state():
                     is_sunk += 1
             if is_sunk == len(ship):
@@ -141,3 +150,13 @@ class Board:
                 ships_sunk += 1
         return ships_sunk
 
+    def validate_ship_size(self, initial_position, final_position, len):
+        pos_x_init, pos_x_final = int(initial_position[1:]) - 1, int(final_position[1:]) - 1
+        pos_y_init, pos_y_final = get_row(initial_position), get_row(final_position)
+        if pos_x_init == pos_x_final:
+            if pos_y_final - pos_y_init == len-1:
+                return True
+        elif pos_y_init == pos_y_final:
+            if pos_x_final - pos_x_init == len-1:
+                return True
+        return False
