@@ -33,7 +33,10 @@ class Player:
 if __name__ == '__main__':
 
     player1 = Player()
-    player2 = Player()
-
     player1.set_board()
-    player2.set_board()
+    player1.recive_bullet("a5")
+    player1.recive_bullet("a6")
+    player1.recive_bullet("a7")
+    player1.recive_bullet("a8")
+    player1.recive_bullet("a9")
+    player1.show_board()
