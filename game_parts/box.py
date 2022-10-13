@@ -1,12 +1,11 @@
 
 
 class Box:
-    def __init__(self):
-        pass
 
-    state = False
-    cont = " "
-    pos_x, pos_y = 0, 0
+    def __init__(self):
+        self.state = False
+        self.cont = " "
+        self.pos_x, self.pos_y = 0, 0
 
     def set_cont(self, cont):
         self.cont = cont

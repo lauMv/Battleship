@@ -4,11 +4,10 @@ import os
 
 
 class Player:
-    def __init__(self):
-        pass
 
-    board = Board()
-    state = False
+    def __init__(self):
+        self.board = Board()
+        self.state = False
 
     def set_board(self):
         self.board.set_ships()

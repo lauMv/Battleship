@@ -22,13 +22,12 @@ def validate_ship_size(initial_position, final_position, len):
 
 
 class Board:
-    board = []
-    ships = 5
-    ships_sunks = 0
-    aircraft_carrier = 1
-    ships_positions = []
 
     def __init__(self):
+        self.board = []
+        self.ships = 5
+        self.ships_sunks = 0
+        self.ships_positions = []
         for x in range(10):
             row = []
             for y in range(10):
